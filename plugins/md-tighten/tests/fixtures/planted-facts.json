@@ -1,0 +1,47 @@
+{
+  "deploy-runbook.md": [
+    ["deploy window is Tue/Thu 10:00-15:00 UTC", ["tuesday|tue", "thursday|thu", "10:00", "15:00", "UTC"]],
+    ["never deploy on Friday", ["never|no |don't|do not", "friday"]],
+    ["Friday scar: 2025-11-14, 3 hours down", ["2025-11-14", "3 h"]],
+    ["hotfix exempt from the window", ["hotfix", "window|any (day|time)|exempt"]],
+    ["hotfix still runs make preflight", ["hotfix", "preflight"]],
+    ["make preflight before every deploy", ["make preflight", "every|always|before"]],
+    ["artifact max 400 MB", ["400 MB"]],
+    ["migrations need two reviewers", ["migration", "two|2"]],
+    ["feature flags in config/flags.yaml", ["flag", "config/flags.yaml"]],
+    ["canary gets 5% for 30 minutes", ["5%", "30 min"]],
+    ["roll back above 0.5% errors", ["0.5%", "roll"]],
+    ["rollback command", ["./scripts/rollback.sh --to previous"]],
+    ["page #ops-oncall after rollback", ["ops-oncall"]],
+    ["docs-only changes need no page", ["docs-only", "no|not|don't|skip|exception|except"]]
+  ],
+  "ingestao-dados.md": [
+    ["arquivos chegam em s3://ingest-raw/ às 06:00", ["s3://ingest-raw/", "06:00"]],
+    ["nunca apagar do raw", ["nunca|não", "apag"]],
+    ["mover para archive/", ["archive/"]],
+    ["retenção de 90 dias", ["90 dias"]],
+    ["máximo 2 GB por arquivo", ["2 GB"]],
+    ["dividir com split_csv.py", ["split_csv.py"]],
+    ["colunas obrigatórias sku, preco, estoque", ["sku", "preco", "estoque"]],
+    ["preço em centavos, inteiro", ["centavos", "inteiro"]],
+    ["preço nunca float", ["float", "nunca|não"]],
+    ["cicatriz 2026-03-02, R$ 12.400", ["2026-03-02", "12.400"]],
+    ["comando de reprocessamento", ["ingest run --date AAAA-MM-DD --force"]],
+    ["--force só com aprovação do dono", ["--force", "aprova"]],
+    ["erros vão para #dados-alertas", ["dados-alertas"]],
+    ["mais de 50 erros rejeita o lote", ["50", "rejeit"]]
+  ],
+  "api-limits.md": [
+    ["Free: 60 rpm, burst 10", ["free", "60", "10"]],
+    ["Pro: 600 rpm, burst 100", ["pro", "600", "100"]],
+    ["Enterprise: 6000 rpm, burst 1000", ["enterprise", "6000", "1000"]],
+    ["limits per API key, not per IP", ["key", "IP"]],
+    ["429 carries Retry-After in seconds", ["429|Retry-After", "Retry-After"]],
+    ["exponential back-off from 1 s, cap 64 s", ["1 s", "64 s"]],
+    ["never retry a 400", ["400", "never|don't|do not|no "]],
+    ["/v2/batch counts 1 request per 100 items", ["/v2/batch", "100"]],
+    ["webhooks not rate-limited", ["webhook", "not|no |aren't|exempt"]],
+    ["raise via support@example.com", ["support@example.com"]],
+    ["raise takes 5 business days", ["5 business days"]]
+  ]
+}

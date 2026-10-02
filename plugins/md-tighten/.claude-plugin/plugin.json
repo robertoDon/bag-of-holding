@@ -1,0 +1,11 @@
+{
+  "name": "md-tighten",
+  "description": "Rewrite bloated Markdown into short sentences, bullets and tables. Every literal and every fact is checked before a document is delivered.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Roberto Becker",
+    "url": "https://github.com/robertoDon"
+  },
+  "license": "MIT",
+  "keywords": ["markdown", "documentation", "editing", "concise"]
+}
