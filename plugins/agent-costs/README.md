@@ -104,7 +104,7 @@ Override or add a model in `~/.claude/agent-costs/prices.json`:
 ## Install
 
 ```
-/plugin marketplace add robertoDon/claude-plugins
+/plugin marketplace add robertoDon/bag-of-holding
 ```
 ```
 /plugin install agent-costs@robertodon-plugins

@@ -89,7 +89,7 @@ An honest miss beats a cosmetic hit.
 ## Install
 
 ```
-/plugin marketplace add robertoDon/claude-plugins
+/plugin marketplace add robertoDon/bag-of-holding
 ```
 ```
 /plugin install md-tighten@robertodon-plugins
