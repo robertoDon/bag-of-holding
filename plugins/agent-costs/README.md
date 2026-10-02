@@ -107,7 +107,7 @@ Override or add a model in `~/.claude/agent-costs/prices.json`:
 /plugin marketplace add robertoDon/bag-of-holding
 ```
 ```
-/plugin install agent-costs@robertodon-plugins
+/plugin install agent-costs@bag-of-holding
 ```
 
 Send them as two separate prompts, then restart open sessions: hooks load at start-up.

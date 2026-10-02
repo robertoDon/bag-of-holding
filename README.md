@@ -1,4 +1,4 @@
-<h1 align="center">robertodon-plugins</h1>
+<h1 align="center">bag-of-holding</h1>
 
 <p align="center">
   <em>Small Claude Code plugins that do one thing.</em>
@@ -22,8 +22,8 @@
 /plugin marketplace add robertoDon/bag-of-holding
 ```
 ```
-/plugin install agent-costs@robertodon-plugins
-/plugin install md-tighten@robertodon-plugins
+/plugin install agent-costs@bag-of-holding
+/plugin install md-tighten@bag-of-holding
 ```
 
 Send them as two separate prompts.

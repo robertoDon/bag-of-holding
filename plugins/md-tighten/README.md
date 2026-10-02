@@ -92,7 +92,7 @@ An honest miss beats a cosmetic hit.
 /plugin marketplace add robertoDon/bag-of-holding
 ```
 ```
-/plugin install md-tighten@robertodon-plugins
+/plugin install md-tighten@bag-of-holding
 ```
 
 Send them as two separate prompts. Needs `python3` on the `PATH`.

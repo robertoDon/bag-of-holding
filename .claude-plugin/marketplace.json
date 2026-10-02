@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "robertodon-plugins",
+  "name": "bag-of-holding",
   "description": "Claude Code plugins by Roberto Becker.",
   "owner": {
     "name": "Roberto Becker",
