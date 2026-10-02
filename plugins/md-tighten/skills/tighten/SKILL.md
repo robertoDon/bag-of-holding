@@ -2,7 +2,7 @@
 name: tighten
 description: Rewrite bloated Markdown into short sentences, bullets and tables without losing a fact. Takes a file or a folder. Edits in place, then gates every document on two checks: a script that every literal survived, and an independent agent that every fact and rule survived. Restores the original when it can't pass both. Use when docs, READMEs, agent prompts or CLAUDE.md files have grown wordy.
 argument-hint: <file-or-folder> [target 25%] [owners: file = what it owns; ...]
-allowed-tools: Read, Glob, Grep, Agent, Bash(python3 *), Bash(mktemp *), Bash(mkdir *), Bash(cp *)
+allowed-tools: Read, Glob, Grep, Agent, Bash(python3 *), Bash(date *), Bash(mkdir *), Bash(cp *)
 ---
 
 # Tighten Markdown
@@ -29,7 +29,9 @@ Scripts (if the variable below is not expanded, Glob `**/md-tighten/scripts/*.py
 
 ## 2. Snapshot and measure
 
-- Run `mktemp -d` on its own. Shell variables don't survive between calls: reuse the printed path literally.
+- Snapshot dir: `.md-tighten-snapshot/<stamp>/` in the working directory, stamp from `date +%Y%m%d-%H%M%S`.
+  Not the system temp: Claude Code blocks copies outside the working directory.
+- Shell variables don't survive between calls. Write the full path into every command.
 - Copy every document to `<snapshot dir>/<its path relative to the request root>`, with `mkdir -p`.
 - Run the meter on the originals. Skip a document under 400 prose bytes; report it as too short.
 
@@ -45,13 +47,15 @@ Each unit gets at most 3 rounds.
 - the owners map, in owners mode;
 - on round 2+, the exact problem lines from the failed check below.
 
+Run every script as one plain command: no pipes, no `&&`, no `echo $?`. The exit status is in the tool result.
+
 **b. Literal check.** `python3 <check_literals> <snapshot> <doc>`, or
 `--before <snapshots…> --after <docs…>` for an owners unit.
 Exit 1 → next round with its output. Skip c this round.
 
 **c. Fact check.** Launch a **new** `md-tighten:fact-checker` every round, never a resumed one.
 Give it only the BEFORE (snapshot) and AFTER (document) paths. No editor output, no history.
-`VERDICT: FAIL` → next round with its ABSENT and ADDED lines.
+`VERDICT: FAIL`, or any ABSENT or ADDED line whatever the verdict says → next round with those lines.
 
 **d. Both pass** → the unit is done.
 
@@ -68,4 +72,4 @@ Run the meter's `--compare` per document. Then one table:
 - Status: `done`, `under target`, `restored` or `too short`.
 - Under target: say by how many bytes, and the editor's BLOCKERS line.
 - Restored: the problem lines that never cleared.
-- Last line: the snapshot folder, for `diff -r`.
+- Last line: the snapshot folder, for `diff -r`. Delete it once the result is accepted.

@@ -23,6 +23,7 @@ Stopping at step 2 is the known failure. Reformatting alone saves ~0-10%.
 - Measured in **prose bytes**: everything outside front matter, code blocks and table rows.
 - Those three are frozen, so a target on total bytes is only reachable by breaking a rule.
 - Measure before and after: `python3 <meter> --compare <snapshot> <file>`. Never estimate.
+- Run each script as one plain command. No pipes, no `&&`, no `echo $?`: they trigger permission prompts.
 - Default target: 25% fewer prose bytes. The brief may set another.
 
 You may not game it:
@@ -115,7 +116,7 @@ The brief lists missing literals or facts, with where they were in the snapshot.
 
 ## Report
 
-End with exactly these lines, nothing after them:
+End with exactly these four lines, even when the conversation is in another language:
 
 ```
 CUT: <before> -> <after> prose bytes (<percent>%)

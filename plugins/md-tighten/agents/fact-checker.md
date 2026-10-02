@@ -48,3 +48,4 @@ VERDICT: PASS (<n> facts)  or  VERDICT: FAIL (<a> absent, <d> added of <n> facts
 ```
 
 PASS needs zero ABSENT and zero ADDED.
+Decide each line before you write it. Never write a line and then retract it.

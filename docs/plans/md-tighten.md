@@ -34,3 +34,14 @@ Rewrite bloated Markdown into short sentences, bullets and tables. Lose no fact.
 - Three bloated fixtures with planted facts (EN, PT, table+code). Run the real plugin headless, measure the cut, check every planted fact.
 - One real doc, on a copy, against the source agent's output.
 - Install from the local marketplace headless; check the prefixed skill and agents load.
+
+## Results (2026-10-02)
+
+| Test | Result |
+| --- | --- |
+| Unit tests | 43 pass |
+| Literal check identity on 2500 real docs | 0 false alarms |
+| Fixtures, headless real run | 61% mean prose cut, 39/39 planted facts; every doc sent back by the fact check at least once |
+| Real loop doc, plugin | 4.8% cut, 95/95 literals, fact check PASS on round 2 |
+| Same doc, source agent | 6.4% cut, 3 facts lost per the fact-checker |
+| Local marketplace install, headless | `md-tighten:tighten`, `md-tighten:editor`, `md-tighten:fact-checker` listed |

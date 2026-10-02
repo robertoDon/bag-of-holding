@@ -168,6 +168,9 @@ class Check(unittest.TestCase):
         after = '- Waits 30 s.\n- Then calls notify() again.\n'
         self.assertEqual(check([before], [after]), [])
 
+    def test_part_of_a_bigger_token_is_not_a_literal(self):
+        self.assertEqual(check(['Wi-Fi 802.11ax, firmware V2.0.\n'], ['Wi-Fi 6, firmware 2.\n']), [])
+
     def test_unit_spacing_is_free(self):
         self.assertEqual(check(['Max 512 MB.\n'], ['Max 512MB.\n']), [])
 

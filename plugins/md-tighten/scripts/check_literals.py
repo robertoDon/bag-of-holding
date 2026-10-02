@@ -130,12 +130,14 @@ def literals(text):
             if not re.match(r'[~./]', lit) and not re.search(r'[._<>{}*$@0-9]', lit) \
                     and not (lit.endswith('/') and len(lit) > 3):
                 continue
-        add(lit, m.start())
+        # Part of a bigger token ("802" in "802.11ax"): not a literal on its own.
+        if token_re(lit).match(body, m.start()):
+            add(lit, m.start())
     return found
 
 
-def present(lit, haystack):
-    """Is lit in haystack as a whole token? Whitespace-insensitive.
+def token_re(lit):
+    """Regex for lit as a whole token. Whitespace-insensitive.
 
     A number keeps its unit, with or without a space; a unit in UNIT_FAMILIES may
     become any synonym ("30 seconds" -> "30 s").
@@ -149,7 +151,11 @@ def present(lit, haystack):
         pat = r'\s+'.join(re.escape(w) for w in lit.split())
     lead = r'(?<![\w])(?<!\d[.,])' if re.match(r'\w', lit) else ''
     tail = r'(?![\w])(?![.,]\d)' if re.search(r'\w$', lit) else ''
-    return re.search(lead + pat + tail, haystack) is not None
+    return re.compile(lead + pat + tail)
+
+
+def present(lit, haystack):
+    return token_re(lit).search(haystack) is not None
 
 
 def check(befores, afters):
