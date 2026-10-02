@@ -1,0 +1,25 @@
+{
+  "_comment": "USD per million tokens, Claude API first-party rates. Source: platform.claude.com/docs/en/about-claude/pricing. Override any model in ~/.claude/agent-costs/prices.json with the same shape. fast_multiplier applies when usage.speed is 'fast'; inference_geo 'us' adds 1.1x.",
+  "read_at": "2026-10-02",
+  "models": {
+    "claude-fable-5-1":  {"input": 10.00, "output": 50.00, "cache_read": 0.25, "cache_write_5m": 12.50, "cache_write_1h": 20.00},
+    "claude-mythos-5-1": {"input": 10.00, "output": 50.00, "cache_read": 0.25, "cache_write_5m": 12.50, "cache_write_1h": 20.00},
+    "claude-fable-5":    {"input": 10.00, "output": 50.00, "cache_read": 1.00, "cache_write_5m": 12.50, "cache_write_1h": 20.00},
+    "claude-mythos-5":   {"input": 10.00, "output": 50.00, "cache_read": 1.00, "cache_write_5m": 12.50, "cache_write_1h": 20.00},
+    "claude-opus-5-5":   {"input": 4.00, "output": 20.00, "cache_read": 0.20, "cache_write_5m": 5.00, "cache_write_1h": 8.00, "fast_multiplier": 2},
+    "claude-opus-5":     {"input": 5.00, "output": 25.00, "cache_read": 0.50, "cache_write_5m": 6.25, "cache_write_1h": 10.00, "fast_multiplier": 2},
+    "claude-opus-4-8":   {"input": 5.00, "output": 25.00, "cache_read": 0.50, "cache_write_5m": 6.25, "cache_write_1h": 10.00, "fast_multiplier": 2},
+    "claude-opus-4-7":   {"input": 5.00, "output": 25.00, "cache_read": 0.50, "cache_write_5m": 6.25, "cache_write_1h": 10.00},
+    "claude-opus-4-6":   {"input": 5.00, "output": 25.00, "cache_read": 0.50, "cache_write_5m": 6.25, "cache_write_1h": 10.00},
+    "claude-opus-4-5":   {"input": 5.00, "output": 25.00, "cache_read": 0.50, "cache_write_5m": 6.25, "cache_write_1h": 10.00},
+    "claude-opus-4-1":   {"input": 15.00, "output": 75.00, "cache_read": 1.50, "cache_write_5m": 18.75, "cache_write_1h": 30.00},
+    "claude-opus-4":     {"input": 15.00, "output": 75.00, "cache_read": 1.50, "cache_write_5m": 18.75, "cache_write_1h": 30.00},
+    "claude-sonnet-5-5": {"input": 2.00, "output": 10.00, "cache_read": 0.20, "cache_write_5m": 2.50, "cache_write_1h": 4.00},
+    "claude-sonnet-5":   {"input": 2.00, "output": 10.00, "cache_read": 0.20, "cache_write_5m": 2.50, "cache_write_1h": 4.00},
+    "claude-sonnet-4-6": {"input": 3.00, "output": 15.00, "cache_read": 0.30, "cache_write_5m": 3.75, "cache_write_1h": 6.00},
+    "claude-sonnet-4-5": {"input": 3.00, "output": 15.00, "cache_read": 0.30, "cache_write_5m": 3.75, "cache_write_1h": 6.00},
+    "claude-sonnet-4":   {"input": 3.00, "output": 15.00, "cache_read": 0.30, "cache_write_5m": 3.75, "cache_write_1h": 6.00},
+    "claude-haiku-4-5":  {"input": 1.00, "output": 5.00, "cache_read": 0.10, "cache_write_5m": 1.25, "cache_write_1h": 2.00},
+    "claude-3-5-haiku":  {"input": 0.80, "output": 4.00, "cache_read": 0.08, "cache_write_5m": 1.00, "cache_write_1h": 1.60}
+  }
+}

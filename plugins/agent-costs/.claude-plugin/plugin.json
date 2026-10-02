@@ -1,0 +1,8 @@
+{
+  "name": "agent-costs",
+  "version": "0.1.0",
+  "description": "Records tokens and dollars for every subagent and main-session turn, then reports cost by agent type, project, session, day or week.",
+  "author": {"name": "Roberto Becker"},
+  "license": "MIT",
+  "keywords": ["cost", "tokens", "usage", "subagents", "hooks"]
+}
