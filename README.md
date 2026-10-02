@@ -1,13 +1,28 @@
-# robertodon-plugins
+<h1 align="center">robertodon-plugins</h1>
 
-Claude Code plugins.
+<p align="center">
+  <em>Small Claude Code plugins that do one thing.</em>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Claude%20Code-marketplace-111111?style=flat-square" alt="Claude Code marketplace">
+  <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT license">
+</p>
+
+---
 
 | Plugin | What it does |
 |---|---|
 | [agent-costs](plugins/agent-costs) | Tokens and dollars per subagent and main-session turn, with a one-table report. |
 | [md-tighten](plugins/md-tighten) | Rewrites bloated Markdown into short sentences, bullets and tables, without losing a fact. |
 
-```bash
+## Install
+
+```
 /plugin marketplace add robertoDon/claude-plugins
+```
+```
 /plugin install agent-costs@robertodon-plugins
 ```
+
+Send them as two separate prompts.
