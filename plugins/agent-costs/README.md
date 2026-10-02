@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" width="220" alt="agent-costs: a receipt with a monocle, stamped AUDITED">
+</p>
+
 <h1 align="center">agent-costs</h1>
 
 <p align="center">
