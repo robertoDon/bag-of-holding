@@ -39,7 +39,7 @@ Rewrite bloated Markdown into short sentences, bullets and tables. Lose no fact.
 
 | Test | Result |
 | --- | --- |
-| Unit tests | 43 pass |
+| Unit tests | 42 pass |
 | Literal check identity on 2500 real docs | 0 false alarms |
 | Fixtures, headless real run | 61% mean prose cut, 39/39 planted facts; every doc sent back by the fact check at least once |
 | Real loop doc, plugin | 4.8% cut, 95/95 literals, fact check PASS on round 2 |
