@@ -23,6 +23,7 @@
 ```
 ```
 /plugin install agent-costs@robertodon-plugins
+/plugin install md-tighten@robertodon-plugins
 ```
 
 Send them as two separate prompts.
