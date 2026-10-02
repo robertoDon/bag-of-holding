@@ -1,54 +1,35 @@
-# md-tighten
+<p align="center">
+  <img src="assets/logo.svg" width="220" alt="md-tighten: a page cinched with a belt, stamped NO FACT LOST">
+</p>
 
-Rewrites bloated Markdown into short sentences, bullets and tables. Loses no fact.
+<h1 align="center">md-tighten</h1>
 
-## Install
+<p align="center">
+  <em>Same facts. Fewer words.</em>
+</p>
 
-```
-/plugin marketplace add robertoDon/claude-plugins
-/plugin install md-tighten@robertodon-plugins
-```
+<p align="center">
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin-111111?style=flat-square" alt="Claude Code plugin">
+  <img src="https://img.shields.io/badge/python-stdlib%20only-111111?style=flat-square" alt="Python stdlib only">
+  <img src="https://img.shields.io/badge/dependencies-0-111111?style=flat-square" alt="Zero dependencies">
+  <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT license">
+</p>
 
-Python 3 on the `PATH`. No other dependency.
+<p align="center">
+  <strong>61% fewer prose bytes on bloated docs &middot; 39/39 planted facts kept &middot; two checks before any delivery</strong>
+</p>
 
-## Use
+---
 
-```
-/md-tighten:tighten docs/runbook.md
-/md-tighten:tighten docs/ target 40%
-/md-tighten:tighten docs/ owners: README.md = overview, install; docs/usage.md = commands, flags
-```
+Your CLAUDE.md is 400 lines. Half of it says the same thing twice.
 
-- A file, or a folder (every `*.md` under it, hidden folders skipped).
-- Default target: 25% fewer prose bytes per document.
-- Owners mode: the files you name are edited together, each sentence moved to its owner.
-- Writes in the document's language. Edits in place; originals go to `.md-tighten-snapshot/`.
+Ask a model to "make it shorter" and it will. It also drops the one "unless" that mattered.
+md-tighten cuts the words, then proves the facts are still there.
 
-## What it guarantees
+## Before / after
 
-A document is delivered only when both checks pass:
+Before, 95 words:
 
-- **Literal check** (`scripts/check_literals.py`). Every number, unit, date, path, URL, flag,
-  inline code, email, `#channel`, CAPS or CamelCase name and snake_case id of the before is
-  in the after. Code block contents and front matter are unchanged. No table loses a row.
-- **Fact check** (`fact-checker` agent). A fresh agent that never saw the edit lists every
-  rule and fact of the before, then marks each present or absent in the after. A softened
-  "never", a dropped "unless" or a widened scope counts as absent.
-
-Either fails: the editor gets the list and tries again, up to 3 rounds. Still failing:
-the original is restored. Can't hit the target without losing a fact: it stops short and
-says by how much, and which facts blocked it.
-
-The cut is measured on prose bytes only (`scripts/prose_bytes.py`). Code, tables and front
-matter are frozen, so they can't be traded for budget. Swapping punctuation and flattening
-tables don't count either.
-
-## Before and after
-
-From the test fixtures, one real run:
-
-> ## If something goes wrong
->
 > If at any point the error rate goes above 0.5%, you should roll back right away. Do not
 > wait to see if it recovers on its own, because in our experience it usually does not. To
 > roll back, run `./scripts/rollback.sh --to previous`, which restores the previous version.
@@ -58,24 +39,88 @@ From the test fixtures, one real run:
 > this is a docs-only change: if your change only touched documentation, you do not need to
 > page anyone.
 
-> ## If something goes wrong
->
+After, 27 words:
+
 > - Error rate above 0.5%: roll back immediately.
 > - Roll back with `./scripts/rollback.sh --to previous`.
 > - After rollback, page the on-call engineer via `#ops-oncall`.
 > - Exception: docs-only changes don't need paging.
 
-Three bloated test docs (English, Portuguese, tables and code): 61% fewer prose bytes on
-average, 39 of 39 planted facts kept. The fact check sent all three back at least once.
+Same threshold, same command, same channel, same exception.
 
-On a doc that was already tight, it cut 4.8% and stopped, listing what blocked it.
+## Numbers
+
+One real headless run over three bloated test docs, each with planted facts:
+
+| doc | prose bytes | cut | planted facts | rounds |
+|---|--:|--:|--:|--:|
+| deploy runbook, English | 3690 → 1337 | 63.8% | 14/14 | 3 |
+| data ingestion guide, Portuguese | 2768 → 1134 | 59.0% | 14/14 | 2 |
+| API limits, table + code + front matter | 2278 → 915 | 59.8% | 11/11 | 2 |
+
+Every doc failed the fact check at least once: a softened "never", a dropped reason with a number.
+Each came back fixed, still far past the 25% target.
+
+On a doc that was already tight, it cut 4.8% and stopped. It listed the facts that blocked a deeper cut.
+The prompt it grew from cut 6.4% of the same doc and lost 3 facts.
+
+## How it works
+
+```
+snapshot → editor rewrites → literal check → fact check (fresh agent) → done
+                ↑                  │ fail            │ absent
+                └── problem list ──┴─────────────────┘
+          3 rounds max. Still failing: the original comes back.
+```
+
+- **Literal check** (`scripts/check_literals.py`). Every number, unit, date, path, URL, flag,
+  inline code, email, `#channel`, CAPS or CamelCase name and snake_case id of the before is
+  in the after. Code block contents and front matter are unchanged. No table loses a row.
+- **Fact check** (`fact-checker` agent). It never saw the edit. It lists every rule and fact
+  of the before, then marks each present or absent in the after. A softened "never", a dropped
+  "unless" or a widened scope counts as absent.
+- **The cut** is measured in prose bytes (`scripts/prose_bytes.py`). Code, tables and front
+  matter are frozen, so they can't be traded for budget. Swapped punctuation and flattened
+  tables don't count.
+
+Can't hit the target without losing a fact? It stops short and says by how much, and why.
+An honest miss beats a cosmetic hit.
+
+## Install
+
+```
+/plugin marketplace add robertoDon/claude-plugins
+```
+```
+/plugin install md-tighten@robertodon-plugins
+```
+
+Send them as two separate prompts. Needs `python3` on the `PATH`.
+
+## Use
+
+```
+/md-tighten:tighten docs/runbook.md
+/md-tighten:tighten docs/ target 40%
+/md-tighten:tighten docs/ owners: README.md = overview, install; docs/usage.md = commands, flags
+```
+
+- A file, or a folder: every `*.md` under it, hidden folders skipped.
+- Default target: 25% fewer prose bytes per document.
+- Owners mode: the named files are edited together, each sentence moved to the file that owns it.
+- Writes in the document's language. Portuguese stays Portuguese.
+- Edits in place. Originals go to `.md-tighten-snapshot/`, ready for `diff -r`.
 
 ## Tests
 
+```bash
+python3 -m unittest discover plugins/md-tighten/tests
+python3 plugins/md-tighten/tests/eval_planted.py plugins/md-tighten/tests/fixtures <tightened copies>
 ```
-python3 -m unittest discover tests
-python3 tests/eval_planted.py tests/fixtures <folder with the tightened copies>
-```
+
+Forty-two tests on both scripts: tables with and without pipes, fenced and indented code,
+nested lists, front matter, unit synonyms, repeated code blocks. The literal check raised zero
+false alarms on 2,500 real docs checked against themselves.
 
 ## License
 

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>md-tighten: a page cinched with a belt, stamped NO FACT LOST</title>
+  <style>
+    .ink { stroke: #111; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .dot { fill: #111; }
+    .paper { fill: #fbf8f1; stroke: #111; }
+    .shadow { fill: #111; opacity: .12; }
+    .belt { fill: #111; }
+    .red { stroke: #d6362b; fill: none; }
+    .redfill { fill: #d6362b; }
+    .shine { fill: #fbf8f1; }
+    .gone { stroke: #111; opacity: .35; fill: none; stroke-linecap: round; }
+    @media (prefers-color-scheme: dark) {
+      .paper { stroke: #fbf8f1; }
+      .shadow { fill: #000; opacity: .45; }
+      .gone { stroke: #fbf8f1; opacity: .45; }
+    }
+  </style>
+
+  <!-- words squeezed out of the waist -->
+  <path class="gone" stroke-width="8" d="M112 246 h-34 M104 270 h-52 M112 294 h-34"/>
+  <path class="gone" stroke-width="8" d="M400 246 h34 M408 270 h52 M400 294 h34"/>
+
+  <g transform="rotate(-4 256 256)">
+    <!-- shadow -->
+    <path class="shadow" d="M164 66 H350 L378 94 V214 Q378 254 334 284 Q378 314 378 354 V446 a14 14 0 0 1 -14 14 H164 a14 14 0 0 1 -14 -14 V354 Q150 314 194 284 Q150 254 150 214 V80 a14 14 0 0 1 14 -14 z"/>
+
+    <!-- the page, pinched at the waist -->
+    <path class="paper" stroke-width="10" stroke-linejoin="round"
+          d="M152 52 H338 L366 80 V200 Q366 240 322 270 Q366 300 366 340 V432 a14 14 0 0 1 -14 14 H152 a14 14 0 0 1 -14 -14 V340 Q138 300 182 270 Q138 240 138 200 V66 a14 14 0 0 1 14 -14 z"/>
+    <path class="ink" stroke-width="8" d="M338 54 V80 H364"/>
+
+    <!-- face: squeezing hard -->
+    <path class="ink" stroke-width="9" d="M184 104 q20 -10 40 2"/>
+    <path class="ink" stroke-width="9" d="M284 106 q20 -12 40 -2"/>
+    <path class="ink" stroke-width="9" d="M190 126 l22 12 l-22 12"/>
+    <path class="ink" stroke-width="9" d="M318 126 l-22 12 l22 12"/>
+    <path class="ink" stroke-width="8" d="M228 186 q14 -10 28 0 q14 10 28 0"/>
+    <path class="ink" stroke-width="5" opacity=".5" d="M180 170 l-10 6 M328 170 l10 6"/>
+
+    <!-- the belt -->
+    <rect class="belt" x="164" y="256" width="176" height="28" rx="4"/>
+    <rect class="shine" x="236" y="252" width="36" height="36" rx="5"/>
+    <rect fill="none" stroke="#111" stroke-width="6" x="236" y="252" width="36" height="36" rx="5"/>
+    <path class="ink" stroke-width="6" d="M254 258 v24"/>
+    <circle class="shine" cx="300" cy="270" r="4"/>
+    <circle class="shine" cx="318" cy="270" r="4"/>
+
+    <!-- tight bullet list -->
+    <circle class="dot" cx="180" cy="330" r="7"/>
+    <path class="ink" stroke-width="12" d="M200 330 h96"/>
+    <circle class="dot" cx="180" cy="362" r="7"/>
+    <path class="ink" stroke-width="12" opacity=".55" d="M200 362 h70"/>
+    <circle class="dot" cx="180" cy="394" r="7"/>
+    <path class="ink" stroke-width="12" opacity=".55" d="M200 394 h84"/>
+  </g>
+
+  <!-- the stamp -->
+  <g transform="rotate(-16 384 396)">
+    <circle class="shine" cx="384" cy="396" r="78"/>
+    <circle class="red" stroke-width="7" cx="384" cy="396" r="74"/>
+    <circle class="red" stroke-width="3" cx="384" cy="396" r="48"/>
+    <path id="top" fill="none" d="M323 396 a61 61 0 0 1 122 0"/>
+    <path id="bottom" fill="none" d="M317 396 a67 67 0 0 0 134 0"/>
+    <g font-family="Helvetica Neue, Arial, sans-serif" font-weight="800" class="redfill">
+      <text font-size="15" letter-spacing="3"><textPath href="#top" startOffset="50%" text-anchor="middle">NO FACT LOST</textPath></text>
+      <text font-size="14" letter-spacing="3"><textPath href="#bottom" startOffset="50%" text-anchor="middle">39/39</textPath></text>
+    </g>
+    <path class="red" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" d="M364 398 l14 14 l28 -32"/>
+  </g>
+</svg>

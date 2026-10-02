@@ -14,7 +14,7 @@
 | Plugin | What it does |
 |---|---|
 | <img src="plugins/agent-costs/assets/logo.svg" width="28" align="center" alt=""> [agent-costs](plugins/agent-costs) | Tokens and dollars per subagent and main-session turn, with a one-table report. |
-| [md-tighten](plugins/md-tighten) | Rewrites bloated Markdown into short sentences, bullets and tables, without losing a fact. |
+| <img src="plugins/md-tighten/assets/logo.svg" width="28" align="center" alt=""> [md-tighten](plugins/md-tighten) | Rewrites bloated Markdown into short sentences, bullets and tables, without losing a fact. |
 
 ## Install
 
