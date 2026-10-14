@@ -1,0 +1,8 @@
+{
+  "name": "plain-talk",
+  "version": "0.1.0",
+  "description": "Draws Claude's replies without inline-code backticks and flags narration between tool calls in the status line.",
+  "author": { "name": "Roberto Becker" },
+  "license": "MIT",
+  "keywords": ["mod", "style", "replies"]
+}

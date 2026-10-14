@@ -18,6 +18,12 @@
       "description": "What each agent costs: tokens and dollars per subagent and main-session turn, with a one-table report.",
       "source": "./plugins/agent-costs",
       "category": "productivity"
+    },
+    {
+      "name": "plain-talk",
+      "description": "Draws Claude's replies without inline-code backticks and flags narration between tool calls.",
+      "source": "./plugins/plain-talk",
+      "category": "productivity"
     }
   ]
 }
