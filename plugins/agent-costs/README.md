@@ -124,13 +124,21 @@ python3 plugins/agent-costs/scripts/agent_costs.py report --by agent --days 7
 
 Data lives in `~/.claude/agent-costs/`. Set `AGENT_COSTS_DIR` to move it.
 
+Hooks fire only while the plugin loads. If it did not (a moved marketplace folder, a
+disabled plugin), bill the missed window from the transcripts. Already-billed lines are
+not billed again:
+
+```bash
+python3 plugins/agent-costs/scripts/agent_costs.py scan --since 2026-10-19T17:00Z --until 2026-10-22T13:00Z
+```
+
 ## Tests
 
 ```bash
 python3 -m unittest discover plugins/agent-costs/tests
 ```
 
-Fourteen tests on hand-built transcripts: split messages, resumed agents, forked sessions, truncated files, unpriced models, broken overrides.
+Fifteen tests on hand-built transcripts: split messages, resumed agents, forked sessions, truncated files, unpriced models, broken overrides, a scan of missed sessions.
 
 ## License
 

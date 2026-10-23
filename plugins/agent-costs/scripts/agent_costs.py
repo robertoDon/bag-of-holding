@@ -3,6 +3,7 @@
 
     agent_costs.py record subagent|main   < hook payload on stdin  (the hooks call this)
     agent_costs.py report [--by agent|project|session|model|day|week] [--days N]
+    agent_costs.py scan --since ISO [--until ISO]   bill transcripts no hook recorded
 
 Lines go to ~/.claude/agent-costs/usage.jsonl (or $AGENT_COSTS_DIR). They hold numbers
 and agent names only: no prompt, no response, no file name.
@@ -212,8 +213,9 @@ def _agent_type(path: Path) -> str | None:
 
 
 def _bill_file(path: Path, kind: str, agent: str, payload: dict, root: Path,
-               prices: dict, now: datetime, skip_ids: set | None = None) -> list[str]:
+               prices: dict, now: datetime | None, skip_ids: set | None = None) -> list[str]:
     """Bill what one transcript gained since its last record; returns the billed ids.
+    `now` None (a scan) dates the line at the last billed row, not at the scan.
     The state is saved before the line is appended: a failure in between loses a line
     rather than counting it twice."""
     state_file = root / "state" / (hashlib.sha1(str(path).encode()).hexdigest() + ".json")
@@ -228,6 +230,9 @@ def _bill_file(path: Path, kind: str, agent: str, payload: dict, root: Path,
     os.replace(tmp, state_file)
     if not (line["turns"] or any(line[k] for k in TOKENS)):
         return []
+    if now is None:
+        now = _ts(next((r["timestamp"] for r in reversed(rows) if r.get("timestamp")), None)) \
+            or datetime.now(timezone.utc)
     line = {"ts": now.isoformat(timespec="seconds").replace("+00:00", "Z"),
             "project": project_name(payload.get("cwd")),
             "session": payload.get("session_id"), "agent": agent,
@@ -238,15 +243,16 @@ def _bill_file(path: Path, kind: str, agent: str, payload: dict, root: Path,
     return [mid for mid in tail if not mid.startswith("\x00")]
 
 
-def record(kind: str, payload: dict, now: datetime | None = None) -> str:
+def record(kind: str, payload: dict, now: datetime | None = None, scan: bool = False) -> str:
     """One hook firing. A subagent end bills that subagent's file. A main-session end
     bills the main transcript, then catches up every subagent file already recorded once
-    (a final line flushed after its own hook read the file, or a resumed agent)."""
+    (a final line flushed after its own hook read the file, or a resumed agent).
+    `scan` bills every subagent file and dates lines at the transcript, not at now."""
     main = Path(payload["transcript_path"]) if payload.get("transcript_path") else None
     path = subagent_transcript(payload) if kind == "subagent" else main
     if path is None or not path.is_file():
         return f"ignored {kind}: no transcript ({sorted(payload)})"
-    now = now or datetime.now(timezone.utc)
+    now = now or (None if scan else datetime.now(timezone.utc))
     root = data_dir()
     (root / "state").mkdir(parents=True, exist_ok=True)
     prices = load_prices()
@@ -272,11 +278,36 @@ def record(kind: str, payload: dict, now: datetime | None = None) -> str:
                 fh.write("".join(f"{mid}\n" for mid in billed))
         subagents = path.parent / str(payload.get("session_id") or path.stem) / "subagents"
         for agent_file in sorted(subagents.rglob("agent-*.jsonl")) if subagents.is_dir() else []:
-            if (root / "state" / (hashlib.sha1(str(agent_file).encode()).hexdigest()
-                                  + ".json")).exists():
+            if scan or (root / "state" / (hashlib.sha1(str(agent_file).encode()).hexdigest()
+                                          + ".json")).exists():
                 _bill_file(agent_file, "subagent", _agent_type(agent_file) or "subagent",
                            payload, root, prices, now)
     return ""
+
+
+def scan(projects: Path, since: datetime, until: datetime | None = None) -> int:
+    """Bill the main transcripts last written in [since, until) as if their hooks had
+    fired. For sessions the hooks missed (plugin not loaded, marketplace path gone): the
+    offsets and seen ids make a transcript already billed add only what it gained."""
+    count = 0
+    for path in sorted(projects.glob("*/*.jsonl")):
+        mtime = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+        if mtime < since or (until and mtime >= until):
+            continue
+        cwd = None
+        with path.open("rb") as fh:
+            for raw in fh:
+                if b'"cwd"' in raw:
+                    try:
+                        cwd = json.loads(raw).get("cwd")
+                    except (json.JSONDecodeError, UnicodeDecodeError):
+                        continue
+                    if cwd:
+                        break
+        record("main", {"transcript_path": str(path), "session_id": path.stem, "cwd": cwd},
+               scan=True)
+        count += 1
+    return count
 
 
 def log(message: str) -> None:
@@ -396,9 +427,16 @@ def main(argv: list[str] | None = None) -> int:
     rep.add_argument("--days", type=float, default=7, help="look back N days (0 = all)")
     rep.add_argument("--project", help="only this project")
     rep.add_argument("--top", type=int, default=15)
+    sc = sub.add_parser("scan", help="bill transcripts the hooks missed")
+    sc.add_argument("--since", required=True, type=_ts, help="ISO time, e.g. 2026-10-19T17:00Z")
+    sc.add_argument("--until", type=_ts)
+    sc.add_argument("--projects", type=Path, default=Path.home() / ".claude" / "projects")
     a = ap.parse_args(argv)
     if a.cmd == "record":
         return hook_main(a.kind)
+    if a.cmd == "scan":
+        print(f"scanned {scan(a.projects, a.since, a.until)} transcripts")
+        return 0
     since = datetime.now(timezone.utc) - timedelta(days=a.days) if a.days else None
     rows = [r for r in load_lines(since) if not a.project or r.get("project") == a.project]
     label = f"Last {a.days:g} days: " if a.days else "All time: "

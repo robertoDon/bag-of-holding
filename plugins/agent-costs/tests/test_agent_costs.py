@@ -195,6 +195,22 @@ class TestRecord(Base):
         self.assertIn("error main", (self.tmp / "data" / "hook.log").read_text())
 
 
+class TestScan(Base):
+    def test_scan_bills_a_session_no_hook_saw_once_dated_at_the_transcript(self):
+        u = {"input_tokens": 10, "output_tokens": 5}
+        self.write(self.main, [{**user(ts="2026-10-20T15:00:00Z"), "cwd": str(self.tmp)},
+                               assistant("m1", usage=u, ts="2026-10-20T15:01:00Z")])
+        self.write(self.proj / "sess1" / "subagents" / "agent-a1.jsonl",
+                   [assistant("s1", usage=u, ts="2026-10-20T15:00:30Z")])
+        since = ac._ts("2000-01-01T00:00Z")
+        self.assertEqual(ac.scan(self.tmp, since), 1)
+        ac.scan(self.tmp, since)                    # a second scan adds nothing
+        lines = self.lines()
+        self.assertEqual(sorted(x["agent"] for x in lines), ["main", "subagent"])
+        self.assertEqual({x["ts"][:10] for x in lines}, {"2026-10-20"})
+        self.assertEqual(lines[0]["session"], "sess1")
+
+
 class TestReport(Base):
     def test_table(self):
         self.write(self.main, [assistant("m1", usage={"input_tokens": 1_000_000})])
